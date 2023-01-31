@@ -1,7 +1,7 @@
 # VoidBound
-Проект для GameDev Camp
+Project for GameDev Camp
 
-### Запуск
-1. Установить Unity Editor версии `2022.2.1f1`
-2. Клонировать этот репозиторий
-3. В Unity Hub нажать Open (стрелочка справа) -> Add Project From Disk
+### Launch
+1. Install Unity Editor version `2022.2.1f1
+2. Clone this repository
+3. In Unity Hub click Open (right arrow) -> Add Project From Disk
