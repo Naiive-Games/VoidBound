@@ -22,7 +22,7 @@ namespace Extenssions {
 		}
 
 		/// <summary>
-		/// Check all items for null! This method faster than LINQ ToArray
+	
 		/// </summary>
 		/// <param name="source"></param>
 		/// <param name="capacity"></param>
@@ -45,7 +45,7 @@ namespace Extenssions {
 		}
 		
 		/// <summary>
-		/// This method faster than LINQ ToList
+
 		/// </summary>
 		/// <param name="source"></param>
 		/// <param name="capacity"></param>
