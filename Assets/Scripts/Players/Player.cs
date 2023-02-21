@@ -10,31 +10,32 @@ namespace Players {
 		public static Player LocalPlayer { get; private set; }
 		public static Player LocalTeammate { get; private set; }
 		
-		protected PlayerConfig config;
 		[SerializeField] protected Weapon weapon;
-		
-		public override void OnStartLocalPlayer() {
-			/*if (isLocalPlayer == false) {
-				LocalTeammate = this;
-				print($"Your teammate - {LocalTeammate.name}");
-				return;
-			}*/
+		protected PlayerConfig config;
+		protected PlayerMovement movement;
 
+		protected virtual void Start() {
+			if (isLocalPlayer == false) {
+				print($"Your teammate - {LocalTeammate.name}");
+				LocalTeammate = this;
+			}
+			
 			LocalPlayer = this;
 		}
-		
+
 		[Server]
 		protected override void OnServerInitialize() {
 			config = LoadConfig();
 			
-			RpcSetWeapon();
 			RpcInitialize();
+			RpcSetWeapon();
 		}
 
 		[TargetRpc]
 		private void RpcInitialize() {
 			config ??= LoadConfig();
 			
+			movement = new PlayerMovement(rigidbody);
 			GameManager.Camera.SetTarget(this);
 			GeneralManager.Instance.Input.SetHandler(config.Input);
 		}
@@ -51,13 +52,18 @@ namespace Players {
 			GameManager.Camera.SetWeapon(weapon.transform);
 		}
 
-		protected void UpdateMoveAnimations(in Vector2 inputDirection) {
-			animator.SetFloat("VelocityX", inputDirection.x);
-			animator.SetFloat("VelocityZ", inputDirection.y);
-		}
-
 		private PlayerConfig LoadConfig() {
 			return GeneralManager.Instance.Resources.GetCharacterConfig(Type) as PlayerConfig;
 		}
+		
+		public virtual void Move() {
+		    movement.Move(config.Speed);
+		    UpdateMoveAnimations(movement.GetLocalDirection());
+		}
+		
+		protected virtual void UpdateMoveAnimations(in Vector3 localMoveDirection) {
+            animator.SetFloat("VelocityX", localMoveDirection.x, 0.1f, Time.fixedDeltaTime);
+            animator.SetFloat("VelocityZ", localMoveDirection.z, 0.1f, Time.fixedDeltaTime);
+        }
 	}
 }

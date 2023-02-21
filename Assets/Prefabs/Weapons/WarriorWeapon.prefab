@@ -139,3 +139,4 @@ MonoBehaviour:
     FireEffect: {fileID: 9064004465245084426, guid: 5540523483ed82b4fb63ac23a88d7e89,
       type: 3}
   shootingPoint: {fileID: 8113176363009742031}
+  shootDelay: 1

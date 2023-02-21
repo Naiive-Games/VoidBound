@@ -30,7 +30,7 @@ namespace Enemies {
 			transform.rotation = transformRotation;
 
 			if (DistanceToPlayer(closestPlayer) > 2f) {
-				rigidBody.AddForce(transform.forward * config.Speed, ForceMode.Acceleration);
+				rigidbody.AddForce(transform.forward * config.Speed, ForceMode.Acceleration);
 			}
 		}
 	}

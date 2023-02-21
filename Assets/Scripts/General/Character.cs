@@ -24,11 +24,11 @@ namespace General {
 		public CharacterType Type;
 
 		protected Animator animator;
-		protected Rigidbody rigidBody;
+		protected new Rigidbody rigidbody;
 
 		private void Awake() {
 			animator = GetComponent<Animator>();
-			rigidBody = GetComponent<Rigidbody>();
+			rigidbody = GetComponent<Rigidbody>();
 		}
 
 		[Server]

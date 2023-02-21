@@ -28,6 +28,8 @@ namespace Generator {
 		private void Awake() {
 			maxDistanceExistence = (Chunk.LENGTH + Chunk.WIDTH) * viewRadius / 2;
 			
+			spawnerChunk.transform.position = new Vector3(100f, 0, 600f);
+
 			var data = new ChunkData(ChunkType.Spawner);
 			data.SetObject(spawnerChunk.gameObject);
 			chunksDataMap.Add(WorldToMatrixPosition(spawnerChunk.transform.position), data);

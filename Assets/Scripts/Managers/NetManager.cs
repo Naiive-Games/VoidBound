@@ -5,10 +5,14 @@ using UnityEngine;
 
 namespace Managers {
 	public class NetManager : NetworkManager {
+		[SerializeField] private ParticleSystem[] spawnableParticles;
+		
 		public override void Awake() {
+			base.Awake();
+			
 			NetworkClient.RegisterHandler<LaserShootMessage>(OnLaserShoot);
 		}
-
+		
 		public override void OnStartServer() {
 			NetworkServer.RegisterHandler<CreateCharacterMessage>(OnCreateCharacter);
 		}
@@ -18,7 +22,7 @@ namespace Managers {
 			
 			var message = new CreateCharacterMessage {
 				CharacterType = CharacterType.Warrior,
-				Position = new Vector3(0f, 3f, 0f),
+				Position = new Vector3(100f, 3f, 600f),
 				IsPlayer = true,
 			};
 			

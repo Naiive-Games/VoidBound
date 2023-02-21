@@ -66,7 +66,7 @@ namespace Game {
 		private static void RespawnPlayer(Character character) {
 			var message = new CreateCharacterMessage {
 				CharacterType = character.Type,
-				Position = new Vector3(0f, 3f, 0f),
+				Position = new Vector3(100f, 0f, 600f),
 				IsPlayer = true,
 			};
 			
