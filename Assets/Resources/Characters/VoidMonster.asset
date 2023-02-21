@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44404f773cf240b087496c4e8f956adf, type: 3}
+  m_Name: VoidMonster
+  m_EditorClassIdentifier: 
+  Prefab: {fileID: 1895144515704022615, guid: 71fd4375396e280468321c0fe86a9956, type: 3}
+  Health: 200
+  Protection: 50
+  Speed: 7
+  Type: 2
+  TriggerDistance: 15
+  AttackDistance: 5
+  VisionDistance: 50

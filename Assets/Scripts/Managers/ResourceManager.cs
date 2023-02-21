@@ -31,5 +31,11 @@ namespace Managers {
 		public CharacterConfig GetCharacterConfig(CharacterType type) {
 			return charactersConfigMap[type];
 		}
+
+		public static bool IsPlayerType(CharacterType type) {
+			if (type is CharacterType.Warrior or CharacterType.DivineEssence) return true;
+
+			return false;
+		}
 	}
 }

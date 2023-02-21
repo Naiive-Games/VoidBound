@@ -1,10 +1,9 @@
 ﻿using Data;
 using Mirror;
 using UnityEngine;
-using Weapons;
 
 namespace General {
-	public abstract class Character : NetworkBehaviour, ICanBeDamaged {
+	public abstract class Character : NetworkBehaviour {
 		[SyncVar, SerializeField] private float health;
 		public float Health {
 			get => health;
@@ -21,17 +20,17 @@ namespace General {
 		[SyncVar]
 		private float maxProtection;
 
-		private CharacterConfig config;
-		
-		protected Weapon currentWeapon;
+		[SyncVar]
+		public CharacterType Type;
+
 		protected Animator animator;
-		protected new Rigidbody rigidbody;
+		protected Rigidbody rigidBody;
 
 		private void Awake() {
 			animator = GetComponent<Animator>();
-			rigidbody = GetComponent<Rigidbody>();
+			rigidBody = GetComponent<Rigidbody>();
 		}
-		
+
 		[Server]
 		public void Initialize(CharacterConfig config) {
 			maxHealth = config.Health;
@@ -39,32 +38,12 @@ namespace General {
 			
 			health = maxHealth;
 			protection = maxProtection;
-			
-			RpcInitialize(config.Type);
-		}
-		
-		[TargetRpc]
-		private void RpcInitialize(CharacterType type) {
-			config = GeneralManager.Instance.Resources.GetCharacterConfig(type);
 
-			OnInitialize();
+			Type = config.Type;
+
+			OnServerInitialize();
 		}
 
-		protected virtual void OnInitialize() { }
-
-		protected T GetConfig<T>() where T : CharacterConfig {
-			return (T)config;
-		}
-
-		public void Shoot() {
-			if (currentWeapon == null) return;
-			
-			currentWeapon.Shoot();
-		}
-
-		[TargetRpc]
-		public void RpcSetWeapon(Weapon weapon) {
-			currentWeapon = weapon;
-		}
+		protected virtual void OnServerInitialize() { }
 	}
 }

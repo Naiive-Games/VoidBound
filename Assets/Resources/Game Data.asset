@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CharactersConfig:
   - {fileID: 11400000, guid: 0b99440952f66d8418b1ca9a4921fbec, type: 2}
+  - {fileID: 11400000, guid: 5d605c0ab4934ea46a1082cf6816495c, type: 2}
   ChunksPrefab:
   - {fileID: 5140838224810757184, guid: 06ebd325ba66c5c4f887b9f4589771c1, type: 3}
   - {fileID: 7044416021301386396, guid: 4f6d0c5dc6756f94794a93a04fa136fe, type: 3}
+  - {fileID: -2332544864546865249, guid: 1cf87f52da975db4b8345c1e966e118f, type: 3}

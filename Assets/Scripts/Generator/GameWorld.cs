@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Extenssions;
 using Game;
-using General;
 using Mirror;
 using UnityEngine;
 using Random = System.Random;
@@ -14,13 +13,13 @@ namespace Generator {
 			public int Seed;
 		}
 		
-		private static int seed = -1;
+		private int seed = -1;
 
 		[Min(0)]
 		[SerializeField] private int viewRadius = 4;
+
 		[SerializeField] private Chunk spawnerChunk;
-		
-		private GameCamera gameCamera;
+
 		private Vector2Int currentChunkPosition;
 		private int maxDistanceExistence;
 		private readonly ChunkType[] chunkTypes = { ChunkType.Friendly, ChunkType.Danger };
@@ -28,17 +27,12 @@ namespace Generator {
 
 		private void Awake() {
 			maxDistanceExistence = (Chunk.LENGTH + Chunk.WIDTH) * viewRadius / 2;
-
-			var chunkPosition = new Vector2Int(0, 0);
+			
 			var data = new ChunkData(ChunkType.Spawner);
-			SpawnChunk(spawnerChunk, chunkPosition, ref data);
-			chunksDataMap.Add(chunkPosition, data);
+			data.SetObject(spawnerChunk.gameObject);
+			chunksDataMap.Add(WorldToMatrixPosition(spawnerChunk.transform.position), data);
 			
 			NetworkClient.RegisterHandler<GeneratorMessage>(OnGenerateMessage);
-		}
-
-		private void Start() {
-			gameCamera = GameManager.Instance.Camera;
 		}
 
 		private void OnGenerateMessage(GeneratorMessage message) {
@@ -72,12 +66,12 @@ namespace Generator {
 		
 		private IEnumerator CheckingCurrentChunkRoutine() {
 			while (true) {
-				if (gameCamera.TargetPlayer == null) {
+				if (GameManager.Camera.TargetPlayer == null) {
 					yield return new WaitForSecondsRealtime(0.05f);
 					continue;
 				}
 				
-				var playerChunk = GetPlayerChunkPosition();
+				var playerChunk = WorldToMatrixPosition(GameManager.Camera.TargetPlayer.position);
 				if (currentChunkPosition != playerChunk) {
 					currentChunkPosition = playerChunk;
 					StartCoroutine(Generate());
@@ -129,42 +123,41 @@ namespace Generator {
 			var data = new ChunkData(chunkTypes[randomTypeIndex], chunkRotation);
 			chunksDataMap.Add(chunkPosition, data);
 
-			SpawnChunk(chunkPosition, ref data);
+			var chunk = SpawnChunk(chunkPosition, ref data);
+			chunk.Init(random);
 		}
 
-		private void SpawnChunk(in Vector2Int chunkPosition, ref ChunkData data) {
+		private Chunk SpawnChunk(in Vector2Int chunkPosition, ref ChunkData data) {
 			var prefab = GeneralManager.Instance.Resources.GetChunkPrefab(data.Type);
-			SpawnChunk(prefab, chunkPosition, ref data);
+			return SpawnChunk(prefab, chunkPosition, ref data);
 		}
 
-		private void SpawnChunk(Chunk prefab, in Vector2Int chunkPosition, ref ChunkData data) {
+		private Chunk SpawnChunk(Chunk prefab, in Vector2Int chunkPosition, ref ChunkData data) {
 			var worldPosition = new Vector3(chunkPosition.x * Chunk.LENGTH, 0, chunkPosition.y * Chunk.WIDTH);
 			var chunk = Instantiate(prefab, worldPosition, data.Rotation, transform);
 			data.SetObject(chunk.gameObject);
+
+			return chunk;
 		}
 
 		private static bool IsExistChunk(ChunkData chunkData) => chunkData.IsDestroyed == false;
 
 		private bool IsOutOfRange(ChunkData chunkData) {
-			if (gameCamera.TargetPlayer == null || chunkData.Object == null) return false;
+			if (GameManager.Camera.TargetPlayer == null || chunkData.Object == null) return false;
 			
-			return chunkData.Object.transform.DistanceTo(gameCamera.TargetPlayer) >= maxDistanceExistence;
+			return chunkData.Object.transform.DistanceTo(GameManager.Camera.TargetPlayer) >= maxDistanceExistence;
 		}
 
-		private Vector2Int GetPlayerChunkPosition() {
-			var playerWorldPosition = Vector3Int.FloorToInt(gameCamera.TargetPlayer.position);
-			return GetChunkAtPosition(playerWorldPosition);
-		}
-		
-		private static Vector2Int GetChunkAtPosition(in Vector3Int pointWorldPosition) {
-			return new Vector2Int(pointWorldPosition.x / Chunk.LENGTH, pointWorldPosition.z / Chunk.WIDTH);
+		private static Vector2Int WorldToMatrixPosition(in Vector3 pointWorldPosition) {
+			var worldPositionInt = Vector3Int.FloorToInt(pointWorldPosition);
+			return new Vector2Int(worldPositionInt.x / Chunk.LENGTH, worldPositionInt.z / Chunk.WIDTH);
 		}
 
 		private bool HasChunkInMemory(in Vector2Int positionInMatrix, out ChunkData data) {
 			return chunksDataMap.TryGetValue(positionInMatrix, out data);
 		}
 
-		private static int GenerateSeed(in Vector2Int chunkPositionInMatrix) {
+		private int GenerateSeed(in Vector2Int chunkPositionInMatrix) {
 			var x = chunkPositionInMatrix.x;
 			var y = chunkPositionInMatrix.y;
 			var n = (x + y) * (x + y + 1) / 2 + y;

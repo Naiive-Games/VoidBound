@@ -1,53 +1,66 @@
 ﻿using System.Collections;
 using Data;
 using Extenssions;
+using Game;
 using General;
 using Players;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Enemies {
-	public class Enemy : Character {
-		private Transform closestPlayer;
-		private EnemyConfig config;
+	public abstract class Enemy : Character {
+		protected Transform closestPlayer;
+		protected EnemyConfig config;
 
-		protected override void OnInitialize() {
-			config = GetConfig<EnemyConfig>();
+		protected override void OnServerInitialize() {
+			config = GeneralManager.Instance.Resources.GetCharacterConfig(Type) as EnemyConfig;
+			
 			StartCoroutine(CheckingDistanceToPlayer());
 		}
 
 		private IEnumerator CheckingDistanceToPlayer() {
-			var players = new[] { Player.LocalPlayer.transform, Player.LocalTeammate.transform };
 			while (true) {
+				if (Player.LocalPlayer == null) {
+					yield return new WaitForFixedUpdate();
+					continue;
+				}
+				
 				if (closestPlayer == null) {
+					var players = GameManager.Players;
 					var newClosestPlayer = players[Random.Range(0, players.Length)];
-					
+
 					if (DistanceToPlayer(newClosestPlayer.transform) >= config.VisionDistance) {
-						
-						yield return new WaitForSecondsRealtime(0.5f);
+						OnIdleState();
+						yield return new WaitForFixedUpdate();
 						continue;
 					}
 					
 					closestPlayer = newClosestPlayer.transform;
 				}
-				
-				if (DistanceToPlayer(closestPlayer) <= config.AttackDistance) {
-					
+
+				if (DistanceToPlayer(closestPlayer) > config.TriggerDistance) {
+					yield return new WaitForFixedUpdate();
+					continue;
 				}
+
+				if (DistanceToPlayer(closestPlayer) <= config.AttackDistance) {
+					OnAttackState();
+				} else {
+					OnTriggeredState();
+				}
+				
+				yield return new WaitForFixedUpdate();
 			}
 		}
 
-		private float DistanceToPlayer(Transform player) {
+		protected float DistanceToPlayer(Transform player) {
 			if (player == null) return float.MaxValue;
 			
 			return transform.DistanceTo(player);
 		}
 
-		private void Attack() {
-	
-		}
-
-		private void MoveToPlayer() {
-			
-		}
+		protected abstract void OnIdleState();
+		protected abstract void OnTriggeredState();
+		protected abstract void OnAttackState();
 	}
 }

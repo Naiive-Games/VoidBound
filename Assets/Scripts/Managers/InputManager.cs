@@ -19,7 +19,7 @@ namespace Managers {
 			input?.Update();
 			
 			if (Input.GetKeyDown(KeyCode.F)) {
-				GameManager.Instance?.StartGenerateWorld();
+				GameManager.StartGenerateWorld();
 			}
 		}
 	}

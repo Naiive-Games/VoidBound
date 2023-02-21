@@ -1,14 +1,7 @@
-﻿using Mirror;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Weapons {
-	public class Weapon : NetworkBehaviour {
-		[SerializeField] private BulletConfig bulletConfig;
-		[SerializeField] private Transform shootingPoint;
-		
-		public void Shoot() {
-			var bullet = BulletPool.Instance.Get(shootingPoint);
-			bullet.Initialize(bulletConfig);
-		}
+	public abstract class Weapon : MonoBehaviour {
+		public abstract void Use();
 	}
 }

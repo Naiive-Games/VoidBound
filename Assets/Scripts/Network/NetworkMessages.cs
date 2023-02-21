@@ -7,4 +7,10 @@ namespace Network {
 		public Vector3 Position;
 		public bool IsPlayer;
 	}
+
+	public struct LaserShootMessage : NetworkMessage {
+		public NetworkIdentity LaserSender;
+		public Vector3 Origin;
+		public Vector3 EndPoint;
+	}
 }

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 namespace General {
-	public struct InputHelper {
+	public class InputHelper {
 		public const string VERTICAL = "Vertical";
 		public const string HORIZONTAL = "Horizontal";
 		public const string JUMP = "Jump";
