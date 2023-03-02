@@ -22,7 +22,14 @@ public class Shooting : MonoBehaviour
 
         // Add force to the bullet in the direction of the fire point
         bullet.GetComponent<Rigidbody>().AddForce(firePoint.forward * 1000);
+        
+        // Destroy the bullet after 5 seconds
+        Destroy(bullet, 5f);
+       
+        
     }
+    
+  
 }
 
 

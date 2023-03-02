@@ -493,6 +493,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 4
+--- !u!1 &753972284 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 112718708148008471, guid: 71fd4375396e280468321c0fe86a9956,
+    type: 3}
+  m_PrefabInstance: {fileID: 864882035}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &753972294
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 753972284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7809b758b72f1804e9e15c99dbb35729, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 627178323}
+  speed: 5
 --- !u!1 &792139428
 GameObject:
   m_ObjectHideFlags: 0
@@ -613,8 +633,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 168a29b7dd64fed4089f472e41e36c87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pointstart: {fileID: 0}
-  pointback: {fileID: 0}
 --- !u!1001 &864882035
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -688,10 +706,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1895144515704022615, guid: 71fd4375396e280468321c0fe86a9956, type: 3}
+    - {fileID: 1895144515704022956, guid: 71fd4375396e280468321c0fe86a9956, type: 3}
+    - {fileID: 1895144515704022957, guid: 71fd4375396e280468321c0fe86a9956, type: 3}
+    - {fileID: 1895144515704022954, guid: 71fd4375396e280468321c0fe86a9956, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 112718708148008471, guid: 71fd4375396e280468321c0fe86a9956,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 753972294}
   m_SourcePrefab: {fileID: 100100000, guid: 71fd4375396e280468321c0fe86a9956, type: 3}
 --- !u!1 &1007677649
 GameObject:
@@ -1372,8 +1398,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 168a29b7dd64fed4089f472e41e36c87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pointstart: {fileID: 792139432}
-  pointback: {fileID: 2116599316}
 --- !u!136 &2116599313
 CapsuleCollider:
   m_ObjectHideFlags: 0
